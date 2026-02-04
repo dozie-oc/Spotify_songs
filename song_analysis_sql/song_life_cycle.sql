@@ -1,4 +1,4 @@
--- Step 1: Get the true Top 12 biggest songs (from your perfected Story #1)
+-- Step 1: Get the true Top 12 biggest songs
 WITH top_songs AS (
   SELECT DISTINCT
     name,
@@ -31,7 +31,7 @@ life_cycle_raw AS (
     ON s.name = t.name AND s.artists = t.artists
 ),
 
--- Step 3: Final clean output (perfect for export → line chart in Excel/Sheets/PowerBI/Tableau)
+-- Step 3: Final clean output 
 final_life_cycle AS (
   SELECT
     name || ' - ' || artists AS track,
@@ -40,13 +40,11 @@ final_life_cycle AS (
     daily_rank,
     popularity,
     chart_points_that_day,
-    -- Inverted rank so higher = better on charts (optional but looks nicer)
     (51 - daily_rank) AS rank_score
   FROM life_cycle_raw
   ORDER BY name, artists, snapshot_date
 )
 
--- This is your money query
 SELECT *
 FROM final_life_cycle
 ORDER BY track, snapshot_date;
